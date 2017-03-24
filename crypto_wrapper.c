@@ -22,6 +22,9 @@ int generate_rsa_keypair(RSA **keypair,
 	int res = RSA_generate_key_ex(kp, 2048, exponent, NULL);
 	if (!res) {
 		ERR_print_errors_fp(stderr);
+		RSA_free(kp);
+		BN_clear_free(exponent);
+		CRYPTO_cleanup_all_ex_data();
 		return -1;
 	}
 
