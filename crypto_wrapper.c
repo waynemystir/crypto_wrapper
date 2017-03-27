@@ -102,7 +102,7 @@ char *read_file_to_str(char *filepath) {
 }
 
 unsigned char *read_file_to_bytes(char *filepath) {
-	FILE *f = fopen(filepath, "r");
+	FILE *f = fopen(filepath, "rb");
 	if (f) {
 		fseek(f, 0, SEEK_END);
 		long fsize = ftell(f);
