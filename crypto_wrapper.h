@@ -7,6 +7,10 @@ int generate_rsa_keypair(RSA **keypair,
 	char *private_key_filepath,
 	char *public_key_filepath);
 
+char *read_file_to_str(char *filepath);
+
+unsigned char *read_file_to_bytes(char *filepath);
+
 void load_public_key_from_filepath(RSA **public_key, char *filepath);
 
 void load_public_key_from_str(RSA **public_key, char *str);

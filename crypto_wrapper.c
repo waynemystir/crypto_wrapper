@@ -101,6 +101,21 @@ char *read_file_to_str(char *filepath) {
 	return NULL;
 }
 
+unsigned char *read_file_to_bytes(char *filepath) {
+	FILE *f = fopen(filepath, "r");
+	if (f) {
+		fseek(f, 0, SEEK_END);
+		long fsize = ftell(f);
+		fseek(f, 0, SEEK_SET);  //same as rewind(f);
+		unsigned char *uca = malloc(fsize + 1);
+		fread(uca, fsize, 1, f);
+		uca[fsize] = 0;
+		fclose(f);
+		return uca;
+	}
+	return NULL;
+}
+
 void load_public_key_from_filepath(RSA **public_key, char *filepath) {
 	char *r = read_file_to_str(filepath);
 	if (r) load_public_key_from_str(public_key, r);
