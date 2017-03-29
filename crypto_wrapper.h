@@ -25,7 +25,8 @@ void rsa_decrypt(RSA *private_key,
 	unsigned char *decrypted_data,
 	int *result_len);
 
-int aes_encrypt(unsigned char *plaintext,
+int aes_encrypt(unsigned char *unencrypted_data,
+	int unencrypted_size,
 	unsigned char *key,
 	unsigned char *iv,
 	unsigned char *ciphertext);

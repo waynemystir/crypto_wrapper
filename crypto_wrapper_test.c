@@ -9,6 +9,13 @@
 #define NUM_BYTES_AES_KEY 256
 #define NUM_BYTES_AES_IV 128
 
+typedef struct some_struct {
+	char memb_one[10];
+	char memb_two[10];
+	char memb_three[10];
+	char memb_four[10];
+} some_struct_t;
+
 int main() {
 	printf("crypto_wrapper_test main 0\n");
 
@@ -16,7 +23,7 @@ int main() {
 	char *public_key_str = NULL;
 	generate_rsa_keypair(NULL, &private_key_str, &public_key_str, NULL, NULL);
 
-	// printf("security_test main 1 (%s)\n", public_key_str);
+	printf("security_test main 1 (%s) (%lu)\n", public_key_str, strlen(public_key_str));
 	// printf("security_test main 2 (%s)\n", private_key_str);
 
 	unsigned char rsa_plaintext[] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
@@ -62,7 +69,7 @@ int main() {
 	unsigned char aes_plaintext[] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum";
 	unsigned char ciphertext[512];
 	memset(ciphertext, '\0', 512);
-	int ciphertext_len = aes_encrypt(aes_plaintext, symmetric_key, iv, ciphertext);
+	int ciphertext_len = aes_encrypt(aes_plaintext, strlen((char*)aes_plaintext), symmetric_key, iv, ciphertext);
 
 	printf("ciphertext (%s)\n(%d) (%lu) (%lu)\n",
 		ciphertext,
@@ -83,6 +90,22 @@ int main() {
 	}
 
 	printf("aes_decrypt (%s) (%d) (%d)\n", substr_aes_decryptedtext, first_index_aes_plaintext_null, aes_plaintext_len);
+
+	some_struct_t stct;
+	strcpy(stct.memb_one, "str one");
+	strcpy(stct.memb_two, "str two");
+	strcpy(stct.memb_three, "str three");
+	strcpy(stct.memb_four, "str four");
+
+	int length = (int)sizeof(stct) + 16;
+	unsigned char cipherstruct[length];
+	memset(cipherstruct, '\0', length);
+	int cipherstruct_len = aes_encrypt((unsigned char*)&stct, (int)sizeof(stct), symmetric_key, iv, cipherstruct);
+	unsigned char decryptedstructbytes[length];
+	memset(decryptedstructbytes, '\0', length);
+	int decrypted_len = aes_decrypt(cipherstruct, cipherstruct_len, symmetric_key, iv, decryptedstructbytes);
+	some_struct_t *decryptedstruct = (some_struct_t*)decryptedstructbytes;
+	printf("decryptedstruct (%d)(%s)(%s)(%s)(%s)\n", decrypted_len, decryptedstruct->memb_one, decryptedstruct->memb_two, decryptedstruct->memb_three, decryptedstruct->memb_four);
 
 	RSA_free(rsa_pub_key);
 	RSA_free(rsa_priv_key);

@@ -168,7 +168,8 @@ void handleErrors(void)
 	abort();
 }
 
-int aes_encrypt(unsigned char *plaintext,
+int aes_encrypt(unsigned char *unencrypted_data,
+	int unencrypted_size,
 	unsigned char *key,
 	unsigned char *iv,
 	unsigned char *ciphertext) {
@@ -176,7 +177,6 @@ int aes_encrypt(unsigned char *plaintext,
 	EVP_CIPHER_CTX *ctx;
 	int len;
 	int ciphertext_len;
-	int plaintext_len = strlen((char*)plaintext);
 
 	/* Create and initialise the context */
 	if (!(ctx = EVP_CIPHER_CTX_new())) handleErrors();
@@ -192,7 +192,7 @@ int aes_encrypt(unsigned char *plaintext,
 	/* Provide the message to be encrypted, and obtain the encrypted output.
 	* EVP_EncryptUpdate can be called multiple times if necessary
 	*/
-	if (1 != EVP_EncryptUpdate(ctx, ciphertext, &len, plaintext, plaintext_len))
+	if (1 != EVP_EncryptUpdate(ctx, ciphertext, &len, unencrypted_data, unencrypted_size))
 		handleErrors();
 	ciphertext_len = len;
 
