@@ -156,12 +156,13 @@ void load_private_key_from_str(RSA **private_key, char *str) {
 
 void rsa_encrypt(RSA *public_key,
 	const unsigned char* data,
+	int data_size,
 	unsigned char *encrypted_data,
 	int *result_len) {
+
 	int rsa_len = RSA_size(public_key);
-	int data_size = strlen((char*)data);
 	memset(encrypted_data, '\0', rsa_len);
-	*result_len = RSA_public_encrypt(data_size, (const unsigned char*)data, encrypted_data, public_key, PADDING);
+	*result_len = RSA_public_encrypt(data_size, data, encrypted_data, public_key, PADDING);
 	if (*result_len == -1)
 		printf("ERROR: RSA_public_encrypt: %s\n", ERR_error_string(ERR_get_error(), NULL));
 }

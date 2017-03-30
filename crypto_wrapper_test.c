@@ -26,7 +26,7 @@ int main() {
 	printf("security_test main 1 (%s) (%lu)\n", public_key_str, strlen(public_key_str));
 	// printf("security_test main 2 (%s)\n", private_key_str);
 
-	unsigned char rsa_plaintext[] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+	unsigned char rsa_plaintext[] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
 	unsigned char rsa_encrypted_data[512];
 	unsigned char rsa_decrypted_data[512];
 	memset(rsa_encrypted_data, '\0', 512);
@@ -35,7 +35,8 @@ int main() {
 	RSA *rsa_pub_key;
 	load_public_key_from_str(&rsa_pub_key, public_key_str);
 	int result_len = 0;
-	rsa_encrypt(rsa_pub_key, rsa_plaintext, rsa_encrypted_data, &result_len);
+	printf("Attempting to encrypt (%lu) bytes\n", sizeof(rsa_plaintext));
+	rsa_encrypt(rsa_pub_key, rsa_plaintext, sizeof(rsa_plaintext), rsa_encrypted_data, &result_len);
 	printf("rsa_encrypted:(%s)(%d)\n", rsa_encrypted_data, result_len);
 
 	RSA *rsa_priv_key;

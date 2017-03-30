@@ -21,6 +21,7 @@ void load_private_key_from_str(RSA **private_key, char *str);
 
 void rsa_encrypt(RSA *pubic_key,
 	const unsigned char *data,
+	int data_size,
 	unsigned char *encrypted_data,
 	int *result_len);
 
