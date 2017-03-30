@@ -1,3 +1,5 @@
+#ifndef crypto_wrapper_h
+#define crypto_wrapper_h
 
 #include <openssl/rsa.h>
 
@@ -41,3 +43,5 @@ int aes_decrypt(unsigned char *ciphertext,
 	unsigned char *key,
 	unsigned char *iv,
 	unsigned char *plaintext);
+
+#endif /* crypto_wrapper_h */
