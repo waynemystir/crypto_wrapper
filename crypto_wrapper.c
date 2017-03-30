@@ -171,6 +171,7 @@ void rsa_decrypt(RSA *private_key,
 	const unsigned char* encrypted_data,
 	unsigned char *decrypted_data,
 	int *result_len) {
+
 	int rsa_len = RSA_size(private_key) ; // That's how many bytes the decrypted data would be
 	memset(decrypted_data, '\0', rsa_len);
 	*result_len = RSA_private_decrypt(rsa_len, encrypted_data, decrypted_data, private_key, PADDING);
