@@ -160,6 +160,7 @@ void rsa_encrypt(RSA *public_key,
 	unsigned char *encrypted_data,
 	int *result_len) {
 
+	if (!public_key) return;
 	int rsa_len = RSA_size(public_key);
 	memset(encrypted_data, '\0', rsa_len);
 	*result_len = RSA_public_encrypt(data_size, data, encrypted_data, public_key, PADDING);
@@ -172,6 +173,7 @@ void rsa_decrypt(RSA *private_key,
 	unsigned char *decrypted_data,
 	int *result_len) {
 
+	if (!private_key) return;
 	int rsa_len = RSA_size(private_key) ; // That's how many bytes the decrypted data would be
 	memset(decrypted_data, '\0', rsa_len);
 	*result_len = RSA_private_decrypt(rsa_len, encrypted_data, decrypted_data, private_key, PADDING);
@@ -190,6 +192,8 @@ int aes_encrypt(unsigned char *unencrypted_data,
 	unsigned char *key,
 	unsigned char *iv,
 	unsigned char *ciphertext) {
+
+	if (!key || !iv) return 0;
 
 	EVP_CIPHER_CTX *ctx;
 	int len;
